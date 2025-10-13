@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FN Tourney Hub - Event Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+</head>
+<body>
+    
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
+        </a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
+            </ul>
+            
+            <!-- Profile Icon -->
+            <ul class="navbar-nav ms-3">
+                <li class="nav-item">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+  </nav>
+
+  <!-- EVENT DETAILS SECTION -->
+    <section class="event-details-container">
+        <div class="row">
+             <!-- Event Image -->
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='img/event2.png') }}" class="event-image" alt="Event Image">
+            </div>
+
+            <!-- Event Info -->
+            <div class="col-lg-6">
+                <h2 class="mb-3">OCE Duo ZW</h2>
+                <p><strong>Status:</strong> Open</p>
+                <p><strong>Date:</strong> 12 Sep 2025</p>
+                <p><strong>Time:</strong> 18:00 - 21:00 AEST</p>
+                <p><strong>Region:</strong> OCE</p>
+                <p><strong>Team Size:</strong> Duo</p>
+                <p><strong>Game Mode:</strong> Zone Wars</p>
+                <p><strong>Format:</strong> 16 Team Bracket</p>
+                <p><strong>Entry Fee:</strong> $5 per player</p>
+                <p><strong>Prize Pool:</strong> $1000</p>
+        
+             <!-- Entering Form -->
+            <h4 class="mt-4">Buy In</h4>
+            <form id="bookingForm">
+                <div class="col-md-6">
+                    <label for="numTickets" class="form-label">Number of Tickets</label>
+                    <p>(note each ticket must be veririfed with an eligible Fortnite account)</p>
+                    <select class="form-select" id="numTickets">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-color-2 mt-3">Purchase</button>
+            </form>
+        </div>
+
+        <!-- COMMENTS SECTION -->
+        <div class="mt-5">
+            <h4>Comments</h4>
+            <div class="mb-3">
+                <p><strong>PlayerOne:</strong> Can't wait for this tournament!</p>
+                <p><strong>EpicGamer:</strong> I hope the server lag is minimal.</p>
+            </div>
+            <form>
+                <div class="mb-3">
+                    <label for="newComment" class="form-label">Add a Comment</label>
+                    <textarea class="form-control" id="newComment" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-color-2">Post Comment</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-0 mt-5">
+        <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
