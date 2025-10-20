@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FN Tourney Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron:wght@700&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+  <style>
+    /* Custom hero banner BG */
+    #landing {
+      background: linear-gradient(135deg, #020024 0%, #090979 50%, #00d4ff 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 90px;
+      font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    }
+    .section__text__p1 {
+      color: #00e0ff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .section__text__p2 {
+      color: #ffbe3d;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 10px 0 35px 0;
+    }
+    .logo img {
+      border-radius: 20px;
+      box-shadow: 0 0 30px #00e0ff88;
+      margin: 12px 0;
+      transition: transform 0.3s;
+    }
+    .logo img:hover {
+      transform: scale(1.1) rotate(-3deg);
+      box-shadow: 0 0 50px #ffbe3daa;
+    }
+
+    /* Navbar highlights */
+    .navbar {
+      box-shadow: 0 2px 16px #00e0ff33;
+      font-family: 'Orbitron', Arial, sans-serif;
+    }
+    .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover {
+      color: #00e0ff !important;
+      text-shadow: 0 0 10px #1af0ffe6;
+    }
+    .bi-person-circle {
+      color: #ffbe3d;
+      transition: color 0.2s;
+    }
+    .bi-person-circle:hover {
+      color: #00e0ff;
+      filter: drop-shadow(0 0 6px #00e0ff99);
+    }
+
+    /* Button styles */
+    .btn-color-1 {
+      background: linear-gradient(90deg, #00e0ff, #ffbe3d 80%);
+      color: #222 !important;
+      border: none;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      box-shadow: 0 2px 20px #00e0ff55;
+      border-radius: 25px;
+      padding: 0.7em 2.3em;
+      transition: transform .13s;
+    }
+    .btn-color-1:hover, .btn-color-2:hover {
+      transform: scale(1.07) translateY(-2px);
+      box-shadow: 0 4px 30px #00e0ffa0;
+    }
+    .btn-color-2 {
+      background: #1e232f;
+      color: #00e0ff !important;
+      border: 2px solid #00e0ff;
+      font-weight: 600;
+      border-radius: 25px;
+      padding: 0.7em 2.3em;
+      box-shadow: 0 2px 10px #00e0ff22;
+      transition: transform .13s, background .2s;
+    }
+    .btn[disabled], .btn[disabled]:hover {
+      background: #c0c0c0 !important;
+      color: #666 !important;
+      filter: grayscale(30%);
+      border-color: #888 !important;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.8;
+    }
+    .btn-container, .btn-container-create {
+      margin-top: 22px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Tournament cards */
+    #tournaments {
+      background: linear-gradient(110deg, #070d1a 0%, #13213a 100%);
+      color: #fff;
+      padding: 80px 0 40px 0;
+      min-height: 650px;
+    }
+    .filter-container {
+      margin: 0 auto 30px auto;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .experience-details-container {
+      margin-top: 0px;
+      padding-bottom: 20px;
+    }
+    .tournaments-containers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .details-container {
+      min-width: 300px;
+      max-width: 330px;
+      background: #0f1828cc;
+      border-radius: 18px;
+      box-shadow: 0 5px 25px #00e0ff33;
+      margin-bottom: 14px;
+      backdrop-filter: blur(1px);
+      color: #fff;
+      padding: 26px 18px 20px 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 2px solid transparent;
+      transition: border .2s, transform .2s;
+    }
+    .details-container.background-image {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .details-container:hover {
+      border: 2px solid #ffbe3d;
+      transform: scale(1.035) translateY(-2px);
+      box-shadow: 0 8px 32px #ffbe3d99;
+    }
+    .experience-sub-title {
+      font-size: 1.35rem;
+      font-family: "Orbitron", Arial, sans-serif;
+      margin-bottom: 8px;
+      letter-spacing: 1.2px;
+      text-shadow: 0 2px 8px #0005;
+    }
+    .details-container p {
+      min-height: 86px;
+      font-size: 1.08rem;
+      margin-bottom: 17px;
+      background: rgba(30,30,35,0.50);
+      border-radius: 10px;
+      padding: 7px 12px;
+      box-shadow: 0 2px 7px #0ff3;
+    }
+    /* Special status badge effect */
+    .details-container a.btn, .details-container button.btn {
+      margin-top: 4px;
+      align-self: flex-end;
+    }
+
+    /* Create Section visual boost */
+    #create {
+      background: linear-gradient(-122deg, #232526 0%, #4ca1af 100%);
+      color: #fff;
+      padding: 80px 0;
+      min-height: 350px;
+    }
+    .create-events-details-container {
+      max-width: 700px;
+      background: rgba(11,22,33,0.9);
+      border-radius: 20px;
+      margin: 40px auto 0 auto;
+      box-shadow: 0 8px 40px #00e0ff22;
+      padding: 36px 32px 32px 32px;
+      font-size: 1.18rem;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .create-events-details-container p {
+      opacity: 0.96;
+      color: #e4faff;
+    }
+    .create-events-details-container .btn-container-create {
+      margin-top: 18px;
+      margin-bottom: 0;
+    }
+    /* Results Section */
+    #results {
+      background: linear-gradient(120deg, #232526 0%, #ffbe3d33 100%);
+      color: #25272c;
+      padding: 80px 0 40px 0;
+    }
+    .results-details-container {
+      margin-top: 14px;
+    }
+    .tournaments-containers > div[class^="details-container2"] {
+      margin-bottom: 30px;
+    }
+    .details-container2,
+    .colour-container,
+    .color-container {
+      min-width: 250px;
+      max-width: 305px;
+      background: linear-gradient(135deg, #272c38 0%, #232f45 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 23px;
+      margin: 0 6px 20px 6px;
+      box-shadow: 0 1px 14px #ffbe3d33, 0 2px 20px #00e0ff18;
+      font-family: 'Orbitron', Arial, sans-serif;
+      border-left: 5px solid #00e0ff;
+      border-right: 5px solid #ffbe3d;
+    }
+    /* Enhanced : Result winner highlight */
+    .details-container2 p {
+      font-weight: 600;
+      font-size: 1.03em;
+      background: #23262777;
+      border-radius: 8px;
+      padding: 6px 10px;
+      color:#ffbe3d;
+      margin:0;
+    }
+    /* Contact section - cards with glow */
+    #contact {
+      background: linear-gradient(120deg, #1a1a2e 50%, #00e0ff33 100%);
+      color: #fff;
+      padding: 76px 0 42px 0;
+    }
+    .contact-info-upper-containers {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .contact-info-container {
+      background: #212c3aed;
+      color: #fff;
+      border-radius: 17px;
+      min-width:170px;
+      max-width: 290px;
+      text-align: center;
+      box-shadow: 0 2px 19px #00e0ff2a, 0 1px 8px #ffbe3d2a;
+      padding: 14px 24px 12px 24px;
+      font-size: 1.09rem;
+      letter-spacing: 0.025em;
+      margin-bottom: 6px;
+      transition: box-shadow .17s, transform .18s;
+    }
+    .contact-info-container:hover {
+      box-shadow: 0 6px 40px #00e0ff6b, 0 2px 28px #ffbe3d55;
+      transform: scale(1.07);
+    }
+    .contact-info-container a {
+      color: #00e0ff;
+      text-decoration: underline dotted #ffbe3d55;
+      word-break: break-all;
+    }
+
+    /* Footer improvement */
+    .footer {
+      background: #070a17;
+      color: #00e0ffbb;
+      font-size: 1.13rem;
+      text-align: center;
+      padding: 28px 0 13px 0;
+      border-top: 2px solid #00e0ff22;
+      box-shadow: 0 -4px 24px #00e0ff33;
+      letter-spacing: 0.09em;
+    }
+
+    @media (max-width: 992px) {
+      .tournaments-containers, .results-details-container .tournaments-containers  {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .details-container, .details-container2 {
+        min-width: 98vw;
+        max-width: 98vw;
+      }
+      #landing {
+        padding-top: 40px;
+      }
+    }
+    @media (max-width: 600px) {
+      .logo img {height:55px;}
+      .section__text__p2 {font-size:1.4rem;}
+      #tournaments, #create, #results, #contact {padding: 35px 0;}
+      .tournaments-containers, .results-details-container .tournaments-containers  {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand py-1" href="{{ url_for('main.index') }}" style="font-size:1.23rem; display:flex;align-items:center;gap:7px;">
+        <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="28" style="filter: drop-shadow(0 0 15px #00e0ff99);">
+        FN Tourney Hub
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainnav" aria-controls="mainnav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainnav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
+          <li class="nav-item d-lg-none mt-2 mb-2"><a class="btn btn-sm btn-color-1 px-4 py-2" href="#">Sign in</a></li>
+        </ul>
+        <ul class="navbar-nav ms-3 d-none d-lg-flex">
+          <li class="nav-item">
+            <a href="#" style="text-decoration:none;"><i class="bi bi-person-circle fs-3"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Landing Section -->
+  <section id="landing">
+    <div class="section__text">
+      <p class="section__text__p1">Welcome to</p>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="FN Tourney Hub Logo" height="100">
+      </div>
+      <p class="section__text__p2 mb-3">Find. Organise. Compete.</p>
+      <div class="btn-container mb-1">
+        <a class="btn btn-color-2" href="{{ url_for('main.index') }}#tournaments"><i class="bi bi-trophy"></i> Explore Tournaments</a>
+        <a class="btn btn-color-1" href="{{ url_for('main.index') }}#create"><i class="bi bi-gear"></i> Organise Your Own</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tournaments Section -->
+  <section id="tournaments">
+    <p class="section__text__p1">Upcoming</p>
+    <h1 class="title text-center mb-3" style="font-family:'Orbitron',Arial,sans-serif;color:#ffbe3d; letter-spacing:2px;">Featured Tournaments</h1>
+  
+    <!-- Filter Buttons -->
+    <div class="filter-container">
+      <button class="btn btn-color-2 active">Solo</button>
+      <button class="btn btn-color-1">Duo</button>
+      <button class="btn btn-color-2">Trio</button>
+      <button class="btn btn-color-2">Squad</button>
+    </div>
+
+    <!-- Tournament Cards -->
+    <div class="experience-details-container">
+      <div class="tournaments-containers">
+        <div class="details-container background-image col-md-4 shadow"
+             data-bg="{{ url_for('static', filename='img/event2.png') }}">
+          <h2 class="experience-sub-title"><i class="bi bi-people-fill"></i> OCE Duo ZW</h2>
+          <p>
+            <span class="badge bg-info text-dark">OCE</span>
+            <span class="badge bg-primary ms-1">Duos</span>
+            <span class="badge bg-warning ms-1">Zone Wars</span><br>
+            <span class="badge bg-success mt-2">Prize: <b>$1000</b></span>
+            <span class="badge bg-success ms-1">Open</span>
+          </p>
+          <a class="btn btn-color-2" href="{{ url_for('main.event_details', slug='oce-duo-zw') }}">View Details</a>
+        </div>
+
+        <div class="details-container background-image col-md-4 shadow"
+             data-bg="{{ url_for('static', filename='img/event.png') }}">
+          <h2 class="experience-sub-title"><i class="bi bi-people-fill"></i> EU BR Bash</h2>
+          <p>
+            <span class="badge bg-info text-dark">EU</span>
+            <span class="badge bg-primary ms-1">Duo</span>
+            <span class="badge bg-secondary ms-1">Battle Royale</span><br>
+            <span class="badge bg-warning mt-2">Prize Pool: <b>$1000</b></span>
+            <span class="badge bg-secondary">Inactive</span>
+          </p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+
+        <div class="details-container background-image col-md-4 shadow"
+             data-bg="{{ url_for('static', filename='img/event3.png') }}">
+          <h2 class="experience-sub-title"><i class="bi bi-controller"></i> Duo Showdown</h2>
+          <p>
+            <span class="badge bg-info text-dark">OCE</span>
+            <span class="badge bg-primary ms-1">Duo</span>
+            <span class="badge bg-secondary ms-1">Battle Royale</span><br>
+            <span class="badge bg-warning mt-2">Prize Pool: <b>$800</b></span>
+            <span class="badge bg-danger">Cancelled</span>
+          </p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+
+        <div class="details-container background-image col-md-4 shadow"
+             data-bg="{{ url_for('static', filename='img/event4.png') }}">
+          <h2 class="experience-sub-title"><i class="bi bi-people-fill"></i> Duo Reload Cup</h2>
+          <p>
+            <span class="badge bg-info text-dark">NA-Central</span>
+            <span class="badge bg-primary ms-1">Duo</span>
+            <span class="badge bg-secondary ms-1">Reload</span><br>
+            <span class="badge bg-warning mt-2">Prize Pool: <b>$250</b></span>
+            <span class="badge bg-secondary">Full</span>
+          </p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+      </div>
+      <div class="btn-container-create">
+        <button class="btn btn-color-1"><i class="bi bi-grid-3x3-gap-fill"></i> View All Tournaments</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create Section -->
+  <section id="create">
+    <p class="section__text__p1">Host Your Own</p>
+    <h1 class="title">Organise a Tournament</h1>
+    <div class="create-events-details-container">
+      <div class="text-container">
+        <p>
+          Organisers can post their Fortnite tournaments here to get publicity and sign-ups. 
+          Each listing includes server region, team size, game mode, format, prize, and a private match code for participants.
+        </p>
+        <div class="btn-container-create">
+          <a class="btn btn-color-1" href="{{ url_for('main.create_event') }}">Create Tournament</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results">
+    <p class="section__text__p1">Past Events</p>
+    <h1 class="title">Featured Results</h1>
+    <div class="results-details-container">
+      <div class="tournaments-containers">
+        <div class="details-container2 colour-container col-md-4">
+          <h2 class="experience-sub-title">Duo Zone Wars</h2>
+          <p>Winners: Ultra!! & saia cb <br>Earnings: $1000</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">Solo Reals OCE</h2>
+          <p>Winner: MACHO 486<br>Earnings: $200</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">NAC Solo Zone Wars</h2>
+          <p>Winner: Limit Zenn<br>Earnings: $2000</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">EU Duo Cup</h2>
+          <p>Winner: Vico & Flickzy<br>Earnings: $8000</p>
+        </div>
+      </div>
+      <div class="btn-container-create">
+        <button class="btn btn-color-1">View All Results</button>
+        <a class="btn btn-color-1" href="{{ url_for('main.booking_history') }}">View My History</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <p class="section__text__p1">Get in Touch</p>
+    <h1 class="title">Contact Us</h1>
+    <div class="contact-info-upper-containers">
+      <div class="contact-info-container">
+        <p><a href="mailto:info@fntourneyhub.com">info@fntourneyhub.com</a></p>
+      </div>
+      <div class="contact-info-container">
+        <p>+61-075-557-261</p>
+      </div>
+      <div class="contact-info-container">
+        <p><a href="https://x.com/">X</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer py-0 mt-5">
+    <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.querySelectorAll('.background-image[data-bg]').forEach(el => {
+      el.style.backgroundImage = `url(${el.getAttribute('data-bg')})`;
+    });
+  </script>
+</body>
+</html>

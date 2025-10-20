@@ -1,0 +1,287 @@
+/* GENERAL STYLING */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-color: #fdfdfd;   
+    --secondary-color: #aaa8a8;
+    --bg-color: #000000;        
+    --section-bg: #0f0f0f;     
+    --text-color: #fff;          
+    --subtext-color: #c0c0c0;   
+    --nav-bg: rgba(0, 0, 0, 0.7); 
+}
+
+/* RESET & BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    line-height: 1.6;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+}
+
+p {
+    color: var(--subtext-color);
+    font-size: 1rem;
+}
+
+/* TRANSITIONS */
+a, .btn {
+    transition: all 300ms ease;
+}
+
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5rem;
+    padding: 0 3rem;
+    background: var(--nav-bg);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+}
+
+.logo2 img {
+    height: 2rem; /* Adjust as needed */
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    font-size: 1.2rem;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* BACKGROUND IMAGE */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../img/fortnite.png") no-repeat center center/cover;
+    opacity: 0.15;   
+    z-index: -1;    
+}
+
+/* SECTIONS */
+section {
+    padding: 8rem 3rem 4rem; /* top padding avoids navbar overlap */
+    min-height: 90vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* LANDING SECTION */
+#landing {
+    text-align: center;
+}
+
+.section__pic-container {
+    margin: 0 auto 2rem;
+    max-width: 15rem;
+}
+
+.section__pic-container img {
+    width: 100%;
+    border-radius: 50%;
+    border: 0.2rem solid var(--primary-color);
+}
+
+.section__text p {
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.section__text__p1 {
+    font-size: 1.25rem;
+    padding-top: 1.5rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+#socials-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* BUTTONS */
+.btn-container,
+.btn-container-create {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-color-1 {
+    background: var(--primary-color);
+    border: none;
+    color: #111;
+}
+
+.btn-color-1:hover {
+    background: var(--secondary-color);
+}
+
+.btn-color-2 {
+    background: transparent;
+    border: 0.15rem solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-color-2:hover {
+    background: var(--primary-color);
+    color: #111;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: left;
+    gap: 0.5rem;
+}
+  
+.filter-container .btn {
+    font-size: 0.9rem;   /* smaller text */
+    padding: 0.25rem 0.75rem; /* tighter padding */
+    min-width: 70px;     /* smaller button width */
+}
+
+/* TOURNAMENTS SECTION */
+.tournaments-containers {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.details-container {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+  
+    /* background image settings */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;  
+    background-color: rgba(0, 0, 0, 0.812); 
+}
+
+.details-container2 {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    background-color: #00000072;
+}
+
+/* force white text */
+.details-container h2,
+.details-container p {
+  color: #ffffff; 
+}
+  
+
+/* CONTACT SECTION */
+#contact {
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.contact-info-upper-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--section-bg);
+    border-radius: 1rem;
+}
+
+/* FOOTER */
+footer {
+    padding: 2rem;
+    background: var(--nav-bg);
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+/* Event Details Page Content */
+.event-details-container {
+    padding-top: 6rem; 
+}
+
+.event-image {
+    height: 30rem;
+    width: auto;
+    object-fit: cover;
+    padding-left: 4rem;
+    padding-top: 2rem;
+}
+
+.form-control {
+    background: black;
+    opacity: 0.5; 
+    border: 0.15rem solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.form-select {
+    background: black;
+    opacity: 0.5; 
+    border: 0.15rem solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Ensures placeholder text is visible */
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: var(--secondary-color);
+}
+
+x
