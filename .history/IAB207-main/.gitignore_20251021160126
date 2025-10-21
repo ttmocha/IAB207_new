@@ -52,6 +52,3 @@ env/
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Ignore all .sqlite files
-*.sqlite
