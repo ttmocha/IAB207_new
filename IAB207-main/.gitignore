@@ -3,6 +3,7 @@
 .idea/
 *.swp
 *.swo
+.history/
 *~
 
 # Python
@@ -51,3 +52,6 @@ env/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Ignore all .sqlite files
+*.sqlite

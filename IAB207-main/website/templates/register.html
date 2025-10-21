@@ -42,49 +42,78 @@
   <section id="register">
     <div class="register-container">
       <h1 class="title">Create Account</h1>
-      <form action="{{ url_for('main.index') }}" method="POST">
+      
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' if category == 'error' else 'info' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      
+      <!-- WTForms Integration -->
+      <form method="POST" action="{{ url_for('auth.register') }}">
+        <!-- Flask-WTF security token (Mandatory) -->
+        {{ form.hidden_tag() }}
         
-        <!-- Username Field -->
+        <!-- Username Field (from RegisterForm.user_name) -->
         <div class="mb-3">
-          <label for="username" class="form-label visually-hidden">Username</label>
+          <label for="{{ form.user_name.id }}" class="form-label visually-hidden">{{ form.user_name.label.text }}</label>
           <div class="input-group">
             <span class="input-group-text bg-dark border-secondary"><i class="bi bi-person-vcard-fill text-light"></i></span>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Epic Games ID" required>
+            {{ form.user_name(class="form-control", placeholder="Epic Games ID", required=true) }}
           </div>
+          {% for error in form.user_name.errors %}
+            <span class="text-danger text-sm">{{ error }}</span>
+          {% endfor %}
         </div>
 
-        <!-- Email Field -->
+        <!-- Email Field (from RegisterForm.email) -->
         <div class="mb-3">
-          <label for="email" class="form-label visually-hidden">Email</label>
+          <label for="{{ form.email.id }}" class="form-label visually-hidden">{{ form.email.label.text }}</label>
           <div class="input-group">
             <span class="input-group-text bg-dark border-secondary"><i class="bi bi-envelope-fill text-light"></i></span>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+            {{ form.email(class="form-control", placeholder="Email Address", required=true) }}
           </div>
+          {% for error in form.email.errors %}
+            <span class="text-danger text-sm">{{ error }}</span>
+          {% endfor %}
         </div>
         
-        <!-- Password Field -->
+        <!-- Password Field (from RegisterForm.password) -->
         <div class="mb-3">
-          <label for="password" class="form-label visually-hidden">Password</label>
+          <label for="{{ form.password.id }}" class="form-label visually-hidden">{{ form.password.label.text }}</label>
           <div class="input-group">
             <span class="input-group-text bg-dark border-secondary"><i class="bi bi-lock-fill text-light"></i></span>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password (Min 8 characters)" required>
+            {{ form.password(class="form-control", placeholder="Password (Min 8 characters)", required=true) }}
           </div>
+          {% for error in form.password.errors %}
+            <span class="text-danger text-sm">{{ error }}</span>
+          {% endfor %}
         </div>
 
-        <!-- Confirm Password Field -->
+        <!-- Confirm Password Field (from RegisterForm.confirm) -->
         <div class="mb-4">
-          <label for="confirm_password" class="form-label visually-hidden">Confirm Password</label>
+          <label for="{{ form.confirm.id }}" class="form-label visually-hidden">{{ form.confirm.label.text }}</label>
           <div class="input-group">
             <span class="input-group-text bg-dark border-secondary"><i class="bi bi-lock-fill text-light"></i></span>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+            {{ form.confirm(class="form-control", placeholder="Confirm Password", required=true) }}
           </div>
+          {% for error in form.confirm.errors %}
+            <span class="text-danger text-sm">{{ error }}</span>
+          {% endfor %}
         </div>
         
-        <!-- Register Button -->
+        <!-- Register Button (from RegisterForm.submit) -->
         <div class="mb-3">
-          <a href="/login" class="btn btn-color-1">Create Account</a>
+          {{ form.submit(class="btn btn-color-1") }}
         </div>
       </form>
+      <!-- End of WTForms Integration -->
 
       <!-- Account Actions -->
       <div class="text-center mt-4">

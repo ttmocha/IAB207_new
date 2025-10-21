@@ -284,3 +284,16 @@ textarea.form-control::placeholder {
   color: var(--secondary-color);
 }
 
+.card-raise {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1rem;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  backdrop-filter: blur(2px);
+}
+.card-raise:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  border-color: rgba(255,255,255,0.25);
+}
+
+
