@@ -6,7 +6,7 @@ import os
 
 from . import db
 from .models import Event, Comment, Order
-from .forms import EventForm
+from .forms import EventForm, LoginForm, RegisterForm
 
 main_bp = Blueprint('main', __name__)
 
@@ -106,8 +106,10 @@ def booking_history():
 
 @main_bp.route('/login')
 def login():
-    return render_template('user.html')
+    form = LoginForm()
+    return render_template('user.html', form=form)
 
 @main_bp.route('/register')
 def register():
-    return render_template('register.html')
+    form = RegisterForm()
+    return render_template('register.html', form=form)
