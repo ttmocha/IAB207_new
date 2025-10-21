@@ -18,10 +18,10 @@
       </a>
       <div class="navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
+          <li class="nav-item"><a class="nav-link" href="#landing">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tournaments">Tournaments</a></li>
+          <li class="nav-item"><a class="nav-link" href="#create">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="#results">History</a></li>
         </ul>
 
         <!-- Profile Icon with link to login -->
@@ -34,7 +34,7 @@
     </div>
   </nav>
 
-  <!-- Landing Section -->
+  <!-- LANDING -->
   <section id="landing">
     <div class="section__text">
       <p class="section__text__p1">Welcome to</p>
@@ -43,17 +43,17 @@
       </div>
       <p class="section__text__p2">Find. Organise. Compete.</p>
       <div class="btn-container">
-        <a class="btn btn-color-2" href="{{ url_for('main.index') }}#tournaments">Explore Tournaments</a>
-        <a class="btn btn-color-1" href="{{ url_for('main.index') }}#create">Organise Your Own</a>
+        <a class="btn btn-color-2" href="#tournaments">Explore Tournaments</a>
+        <a class="btn btn-color-1" href="#create">Organise Your Own</a>
       </div>
     </div>
   </section>
 
-  <!-- Tournaments Section -->
+  <!-- TOURNAMENTS -->
   <section id="tournaments">
     <p class="section__text__p1">Upcoming</p>
     <h1 class="title">Featured Tournaments</h1>
-  
+
     <!-- Filter Buttons -->
     <div class="filter-container">
       <button class="btn btn-color-2">Solo</button>
@@ -62,44 +62,64 @@
       <button class="btn btn-color-2">Squad</button>
     </div>
 
-    <!-- Tournament Cards -->
-    <div class="experience-details-container">
-      <div class="tournaments-containers">
-        <div class="details-container background-image col-md-4"
-             data-bg="{{ url_for('static', filename='img/event2.png') }}">
-          <h2 class="experience-sub-title">OCE Duo ZW</h2>
-          <p>Server: OCE<br>Team Size: Duos<br>Mode: Zone Wars<br>Prize: $1000<br>Status: Open</p>
-          <a class="btn btn-color-2" href="{{ url_for('main.event_details', slug='oce-duo-zw') }}">View Details</a>
-        </div>
+    <!-- Dynamic Tournament Cards -->
+    <div class="experience-details-container mt-4">
+      <div class="tournaments-containers row gy-4">
+        {% if events %}
+          {% for event in events %}
+            <div class="details-container background-image col-md-4 p-3" 
+                 data-bg="{{ url_for('static', filename='img/event2.png') }}">
+              <h2 class="experience-sub-title">{{ event.title }}</h2>
+              <p>
+                Server: {{ event.region or '—' }}<br>
+                Team Size: {{ event.team_size or '—' }}<br>
+                Mode: {{ event.mode or '—' }}<br>
+                Prize: {{ event.prize or '—' }}<br>
+                Status: {{ event.status or '—' }}<br>
+                {% if event.start_at %}
+                  Date: {{ event.start_at.strftime('%d %b %Y, %I:%M %p') }}
+                {% else %}
+                  Date: TBA
+                {% endif %}
+              </p>
+              <a class="btn btn-color-2 w-100" href="{{ url_for('main.event_details', event_id=event.id) }}">
+                View Details
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center text-muted">No tournaments available yet. Be the first to create one!</p>
+        {% endif %}
+      </div>
 
-        <div class="details-container background-image col-md-4"
-             data-bg="{{ url_for('static', filename='img/event.png') }}">
+      <!-- Demo static cards -->
+      <div class="tournaments-containers mt-5">
+        <div class="details-container background-image col-md-4" data-bg="{{ url_for('static', filename='img/event.png') }}">
           <h2 class="experience-sub-title">EU BR Bash</h2>
-          <p>Server: EU<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize Pool: $1000<br>Status: Inactive</p>
+          <p>Server: EU<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize: $1000<br>Status: Inactive</p>
           <button class="btn btn-color-2" disabled>View Details</button>
         </div>
 
-        <div class="details-container background-image col-md-4"
-             data-bg="{{ url_for('static', filename='img/event3.png') }}">
+        <div class="details-container background-image col-md-4" data-bg="{{ url_for('static', filename='img/event3.png') }}">
           <h2 class="experience-sub-title">Duo Showdown</h2>
           <p>Server: OCE<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize Pool: $800<br>Status: Cancelled</p>
           <button class="btn btn-color-2" disabled>View Details</button>
         </div>
 
-        <div class="details-container background-image col-md-4"
-             data-bg="{{ url_for('static', filename='img/event4.png') }}">
+        <div class="details-container background-image col-md-4" data-bg="{{ url_for('static', filename='img/event4.png') }}">
           <h2 class="experience-sub-title">Duo Reload Cup</h2>
           <p>Server: NA-Central<br>Team Size: Duo<br>Mode: Reload<br>Prize Pool: $250<br>Status: Full</p>
           <button class="btn btn-color-2" disabled>View Details</button>
         </div>
       </div>
-      <div class="btn-container-create">
+
+      <div class="btn-container-create mt-4">
         <button class="btn btn-color-1">View All Tournaments</button>
       </div>
     </div>
   </section>
 
-  <!-- Create Section -->
+  <!-- CREATE -->
   <section id="create">
     <p class="section__text__p1">Host Your Own</p>
     <h1 class="title">Organise a Tournament</h1>
@@ -116,7 +136,7 @@
     </div>
   </section>
 
-  <!-- Results Section -->
+  <!-- RESULTS -->
   <section id="results">
     <p class="section__text__p1">Past Events</p>
     <h1 class="title">Featured Results</h1>
@@ -146,7 +166,7 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
+  <!-- CONTACT -->
   <section id="contact">
     <p class="section__text__p1">Get in Touch</p>
     <h1 class="title">Contact Us</h1>
@@ -163,7 +183,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="footer py-0 mt-5">
     <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
   </footer>
@@ -172,6 +192,8 @@
   <script>
     document.querySelectorAll('.background-image[data-bg]').forEach(el => {
       el.style.backgroundImage = `url(${el.getAttribute('data-bg')})`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
     });
   </script>
 </body>

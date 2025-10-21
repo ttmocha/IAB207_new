@@ -1,133 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Event - FN Tourney Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+  <meta charset="UTF-8">
+  <title>Create Event - FN Tourney Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
-            </a>
-            <div class="navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
-                </ul>
-
-                <!-- Profile Icon -->
-                <ul class="navbar-nav ms-3">
-                    <li class="nav-item">
-                        <i class="bi bi-person-circle fs-4"></i>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- EVENT CREATION FORM -->
-    <div class="container" style="padding-top: 7rem; padding-bottom: 3rem;">
-        <h1 class="mb-4 text-center">Create or Update Event</h1>
-        <form class="row g-3">
-            <!-- Event Name -->
-            <div class="col-md-6">
-                <label for="eventName" class="form-label">Event Name</label>
-                <input type="text" class="form-control" id="eventName" placeholder="Enter event title" required>
-            </div>
-
-            <!-- Event Image -->
-            <div class="col-md-6">
-                <label for="eventImage" class="form-label">Event Image</label>
-                <input class="form-control" type="file" id="eventImage" accept="image/*">
-            </div>
-
-            <!-- Date -->
-            <div class="col-md-4">
-                <label for="eventDate" class="form-label">Date</label>
-                <input type="date" class="form-control" id="eventDate" required>
-            </div>
-
-            <!-- Start Time -->
-            <div class="col-md-4">
-                <label for="startTime" class="form-label">Start Time</label>
-                <input type="time" class="form-control" id="startTime" required>
-            </div>
-
-            <!-- End Time -->
-            <div class="col-md-4">
-                <label for="endTime" class="form-label">End Time</label>
-                <input type="time" class="form-control" id="endTime" required>
-            </div>
-
-            <!-- Server Region -->
-            <div class="col-md-6">
-            <label for="serverRegion" class="form-label">Server Region</label>
-                <select id="serverRegion" class="form-select" required>
-                    <option selected disabled>Choose region</option>
-                    <option value="Oceania">Oceania</option>
-                    <option value="NA-East">NA-East</option>
-                    <option value="NA-Central">NA-Central</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Asia">Asia</option>
-                    <option value="Middle East">Middle East</option>
-                    <option value="South America">South America</option>
-                </select>
-            </div>
-
-            <!-- Team Size -->
-            <div class="col-md-6">
-                <label for="teamSize" class="form-label">Team Size</label>
-                <select id="teamSize" class="form-select" required>
-                    <option selected disabled>Select team size</option>
-                    <option value="Solo">Solo</option>
-                    <option value="Duos">Duos</option>
-                    <option value="Trios">Trios</option>
-                    <option value="Squads">Squads</option>
-                </select>
-            </div>
-
-            <!-- Game Mode -->
-            <div class="col-md-6">
-                <label for="gameMode" class="form-label">Game Mode</label>
-                <input type="text" class="form-control" id="gameMode" placeholder="Enter game mode">
-            </div>
-
-            <!-- Buy In -->
-            <div class="col-md-6">
-                <label for="buyIn" class="form-label">Buy In</label>
-                <input type="text" class="form-control" id="buyIn" placeholder="$5">
-            </div>
-
-            <!-- Prize -->
-            <div class="col-md-6">
-                <label for="prize" class="form-label">Prize Pool</label>
-                <input type="text" class="form-control" id="prize" placeholder="Enter prize pool">
-            </div>
-
-            <!-- Private Match Code -->
-            <div class="col-md-6">
-                <label for="matchCode" class="form-label">Match Code/Epic ID</label>
-                <input type="text" class="form-control" id="matchCode" placeholder="Enter match code or Epic ID">
-            </div>
-
-            <!-- Submit -->
-            <div class="col-12 text-center mt-4">
-                <button type="submit" class="btn btn-color-2">Create Event</button>
-            </div>
-        </form>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
+      </a>
+      <div class="navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.create_event') }}">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">History</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="footer py-0 mt-5">
-        <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
-    </footer>
+  <!-- FORM -->
+  <div class="container" style="padding-top: 7rem; padding-bottom: 3rem;">
+    <h1 class="mb-4 text-center">Create Tournament</h1>
+
+    <form class="row g-3" method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <!-- Title -->
+      <div class="col-md-6">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+        {% for e in form.title.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Region -->
+      <div class="col-md-6">
+        {{ form.region.label(class="form-label") }}
+        {{ form.region(class="form-control") }}
+        {% for e in form.region.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Team Size -->
+      <div class="col-md-6">
+        {{ form.team_size.label(class="form-label") }}
+        {{ form.team_size(class="form-select") }}
+        {% for e in form.team_size.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Game Mode -->
+      <div class="col-md-6">
+        {{ form.mode.label(class="form-label") }}
+        {{ form.mode(class="form-control") }}
+        {% for e in form.mode.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Prize -->
+      <div class="col-md-6">
+        {{ form.prize.label(class="form-label") }}
+        {{ form.prize(class="form-control") }}
+        {% for e in form.prize.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Date & Time -->
+      <div class="col-md-6">
+        {{ form.start_at.label(class="form-label") }}
+        {{ form.start_at(class="form-control", type="datetime-local") }}
+        {% for e in form.start_at.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Description -->
+      <div class="col-12">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control", rows="4") }}
+        {% for e in form.description.errors %}
+          <div class="text-danger small">{{ e }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Submit -->
+      <div class="col-12 text-center mt-4">
+        {{ form.submit(class="btn btn-color-2 px-5 py-2") }}
+      </div>
+    </form>
+  </div>
+
+  <footer class="footer py-0 mt-5">
+    <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
