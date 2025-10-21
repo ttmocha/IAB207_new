@@ -2,8 +2,7 @@
 .vscode/
 .idea/
 *.swp
-*.swo
-.history/
+# *.swo
 *~
 
 # Python

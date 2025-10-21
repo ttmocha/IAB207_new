@@ -3,7 +3,6 @@
 .idea/
 *.swp
 *.swo
-.history/
 *~
 
 # Python
