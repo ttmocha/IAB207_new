@@ -11,16 +11,14 @@
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top" style="z-index:1080">
   <div class="container">
-    <!-- Brand: use ONLY the image to avoid duplicate title -->
+    <!-- Brand -->
     <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
-      <img src="{{ url_for('static', filename='img/logo2.png') }}"
-           alt="FN Tourney Hub" height="22">
-      <!-- remove extra text span to avoid repeated title -->
+      <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub" height="22">
     </a>
 
-    <!-- Toggler for mobile -->
+    <!-- Toggler (MUST point to #navbarNav) -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -34,15 +32,28 @@
         <li class="nav-item"><a class="nav-link" href="#create">Create</a></li>
         <li class="nav-item"><a class="nav-link" href="#results">History</a></li>
 
-        <!-- Profile icon (right). Make it a clickable link. -->
-        <li class="nav-item ms-lg-3">
+        <!-- Profile icon with dropdown -->
+        <li class="nav-item dropdown ms-lg-3">
           {% if current_user.is_authenticated %}
-            <!-- Change 'main.profile' to your actual profile route if different -->
-            <a class="nav-link p-0" href="{{ url_for('main.profile') }}" title="Profile" aria-label="Profile">
+            <a class="nav-link dropdown-toggle p-0" href="#" id="profileDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false" aria-label="Profile menu">
               <i class="bi bi-person-circle fs-4"></i>
             </a>
+            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary shadow-sm"
+                aria-labelledby="profileDropdown">
+              <li>
+                <a class="dropdown-item text-light" href="{{ url_for('main.booking_history') }}">
+                  <i class="bi bi-clock-history me-2"></i> My History
+                </a>
+              </li>
+              <li><hr class="dropdown-divider bg-secondary"></li>
+              <li>
+                <a class="dropdown-item text-light" href="{{ url_for('main.logout') }}">
+                  <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+              </li>
+            </ul>
           {% else %}
-            <!-- If user not logged in, send them to login (or register) -->
             <a class="nav-link p-0" href="{{ url_for('main.login') }}" title="Login" aria-label="Login">
               <i class="bi bi-person-circle fs-4"></i>
             </a>
@@ -52,6 +63,7 @@
     </div>
   </div>
 </nav>
+
 
 
   <!-- LANDING -->
@@ -84,7 +96,7 @@
 
     <!-- Dynamic Tournament Cards -->
     <div class="experience-details-container mt-3">
-      <div class="row">
+      <div class="row justify-content-center">
         {% if events %}
           {% for event in events %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
@@ -117,23 +129,26 @@
       </div>
 
       <!-- Demo static cards (optional) -->
-      <div class="row mt-5 g-3">
+      <div class="row mt-5 g-3 justify-content-center">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-          <div class="details-container background-image p-3 card-raise" data-bg="{{ url_for('static', filename='img/event.png') }}">
+          <div class="details-container background-image p-3 card-raise"
+               data-bg="{{ url_for('static', filename='img/event.png') }}">
             <h2 class="experience-sub-title">EU BR Bash</h2>
             <p class="small mb-3">Server: EU<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize: $1000<br>Status: Inactive</p>
             <button class="btn btn-color-2 w-100" disabled>View Details</button>
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-          <div class="details-container background-image p-3 card-raise" data-bg="{{ url_for('static', filename='img/event3.png') }}">
+          <div class="details-container background-image p-3 card-raise"
+               data-bg="{{ url_for('static', filename='img/event3.png') }}">
             <h2 class="experience-sub-title">Duo Showdown</h2>
             <p class="small mb-3">Server: OCE<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize: $800<br>Status: Cancelled</p>
             <button class="btn btn-color-2 w-100" disabled>View Details</button>
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-          <div class="details-container background-image p-3 card-raise" data-bg="{{ url_for('static', filename='img/event4.png') }}">
+          <div class="details-container background-image p-3 card-raise"
+               data-bg="{{ url_for('static', filename='img/event4.png') }}">
             <h2 class="experience-sub-title">Duo Reload Cup</h2>
             <p class="small mb-3">Server: NA-Central<br>Team Size: Duo<br>Mode: Reload<br>Prize: $250<br>Status: Full</p>
             <button class="btn btn-color-2 w-100" disabled>View Details</button>
@@ -169,7 +184,7 @@
     <p class="section__text__p1">Past Events</p>
     <h1 class="title">Featured Results</h1>
     <div class="results-details-container">
-      <div class="row g-3">
+      <div class="row g-3 justify-content-center">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
           <div class="details-container2 colour-container p-3 h-100 card-raise">
             <h2 class="experience-sub-title">Duo Zone Wars</h2>

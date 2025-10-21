@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+
 
 from . import db
 from .models import Event, Comment, Order
@@ -99,7 +100,6 @@ def delete_event(event_id):
     return redirect(url_for('main.index'))
 
 
-
 @main_bp.route('/history')
 def booking_history():
     return render_template('booking-history.html')
@@ -113,3 +113,11 @@ def login():
 def register():
     form = RegisterForm()
     return render_template('register.html', form=form)
+from flask_login import logout_user
+
+@main_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out successfully.', 'info')
+    return redirect(url_for('main.index'))
