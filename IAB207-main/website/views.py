@@ -102,5 +102,12 @@ def delete_event(event_id):
 
 @main_bp.route('/history')
 def booking_history():
-    orders = db.session.execute(db.select(Order).order_by(Order.created_at.desc())).scalars().all()
-    return render_template('booking-history.html', orders=orders)
+    return render_template('booking-history.html')
+
+@main_bp.route('/login')
+def login():
+    return render_template('user.html')
+
+@main_bp.route('/register')
+def register():
+    return render_template('register.html')

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FN Tourney Hub - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+  <style>
+    /* Add specific styles for the login page to ensure the form is centered and readable on the dark background */
+    body {
+      padding-top: 56px; /* Space for the fixed-top navbar */
+      background-color: #000; /* Ensure the background is black */
+      color: #fff; /* Ensure text is white */
+    }
+
+    #login {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 56px); /* Full viewport height minus navbar */
+      padding: 2rem 0;
+    }
+
+    .login-container {
+      background-color: #1a1a1a; /* Slightly lighter black for the container */
+      padding: 3rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .login-container h1 {
+      color: #fff;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .form-control {
+      background-color: #333;
+      border: 1px solid #444;
+      color: #fff;
+      height: 50px; /* Make inputs a bit taller */
+    }
+
+    .form-control:focus {
+      background-color: #444;
+      border-color: var(--primary-color-2); /* Assuming a custom color variable is set */
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* Style the placeholder text */
+    .form-control::placeholder {
+      color: #aaa;
+    }
+
+    /* Use the custom button styles from your main page */
+    .btn-color-1 {
+      /* Replicate or define your custom button style 1 here */
+      background-color: var(--primary-color-1, #f4b400); /* Example yellow/orange */
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      width: 100%;
+      font-weight: 600;
+    }
+
+    .btn-link {
+        color: #f4b400; /* Use a color that stands out for links */
+        text-decoration: none;
+    }
+    .btn-link:hover {
+        color: #ffcc66;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
+      </a>
+      <div class="navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
+        </ul>
+
+        <ul class="navbar-nav ms-3">
+          <li class="nav-item">
+            <i class="bi bi-box-arrow-in-right fs-4 active"></i> 
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section id="login">
+    <div class="login-container">
+      <h1 class="title">Account Login</h1>
+      <form action="{{ url_for('main.index') }}" method="POST">
+        <div class="mb-3">
+          <label for="email" class="form-label visually-hidden">Email or Username</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark border-secondary"><i class="bi bi-person-fill text-light"></i></span>
+            <input type="text" class="form-control" id="email" name="email" placeholder="Email or Username" required>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label for="password" class="form-label visually-hidden">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark border-secondary"><i class="bi bi-lock-fill text-light"></i></span>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <button type="submit" class="btn btn-color-1">Log In</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-4">
+        <p class="mb-1">
+          <a href="{{ url_for('main.forgot_password') }}" class="btn-link">Forgot Password?</a>
+        </p>
+        <p class="mb-0">
+          Need an account? <a href="{{ url_for('main.regiindexster') }}" class="btn-link">Register Here</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer py-3 mt-5 fixed-bottom bg-black">
+    <div class="container text-center">
+      <p class="mb-0">Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
