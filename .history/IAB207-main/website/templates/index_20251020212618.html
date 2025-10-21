@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FN Tourney Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
+      </a>
+      <div class="navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#create">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#results">History</a></li>
+        </ul>
+
+        <!-- Profile Icon -->
+        <ul class="navbar-nav ms-3">
+          <li class="nav-item">
+            <a class="nav-link" href="/login">
+              <i class="bi bi-person-circle fs-4"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Landing Section -->
+  <section id="landing">
+    <div class="section__text">
+      <p class="section__text__p1">Welcome to</p>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="FN Tourney Hub Logo" height="100">
+      </div>
+      <p class="section__text__p2">Find. Organise. Compete.</p>
+      <div class="btn-container">
+        <a class="btn btn-color-2" href="{{ url_for('main.index') }}#tournaments">Explore Tournaments</a>
+        <a class="btn btn-color-1" href="{{ url_for('main.index') }}#create">Organise Your Own</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tournaments Section -->
+  <section id="tournaments">
+    <p class="section__text__p1">Upcoming</p>
+    <h1 class="title">Featured Tournaments</h1>
+  
+    <!-- Filter Buttons -->
+    <div class="filter-container">
+      <button class="btn btn-color-2">Solo</button>
+      <button class="btn btn-color-1">Duo</button>
+      <button class="btn btn-color-2">Trio</button>
+      <button class="btn btn-color-2">Squad</button>
+    </div>
+
+    <!-- Tournament Cards -->
+    <div class="experience-details-container">
+      <div class="tournaments-containers">
+        <div class="details-container background-image col-md-4"
+             data-bg="{{ url_for('static', filename='img/event2.png') }}">
+          <h2 class="experience-sub-title">OCE Duo ZW</h2>
+          <p>Server: OCE<br>Team Size: Duos<br>Mode: Zone Wars<br>Prize: $1000<br>Status: Open</p>
+          <a class="btn btn-color-2" href="{{ url_for('main.event_details', slug='oce-duo-zw') }}">View Details</a>
+        </div>
+
+        <div class="details-container background-image col-md-4"
+             data-bg="{{ url_for('static', filename='img/event.png') }}">
+          <h2 class="experience-sub-title">EU BR Bash</h2>
+          <p>Server: EU<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize Pool: $1000<br>Status: Inactive</p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+
+        <div class="details-container background-image col-md-4"
+             data-bg="{{ url_for('static', filename='img/event3.png') }}">
+          <h2 class="experience-sub-title">Duo Showdown</h2>
+          <p>Server: OCE<br>Team Size: Duo<br>Mode: Battle Royale<br>Prize Pool: $800<br>Status: Cancelled</p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+
+        <div class="details-container background-image col-md-4"
+             data-bg="{{ url_for('static', filename='img/event4.png') }}">
+          <h2 class="experience-sub-title">Duo Reload Cup</h2>
+          <p>Server: NA-Central<br>Team Size: Duo<br>Mode: Reload<br>Prize Pool: $250<br>Status: Full</p>
+          <button class="btn btn-color-2" disabled>View Details</button>
+        </div>
+      </div>
+      <div class="btn-container-create">
+        <button class="btn btn-color-1">View All Tournaments</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create Section -->
+  <section id="create">
+    <p class="section__text__p1">Host Your Own</p>
+    <h1 class="title">Organise a Tournament</h1>
+    <div class="create-events-details-container">
+      <div class="text-container">
+        <p>
+          Organisers can post their Fortnite tournaments here to get publicity and sign-ups. 
+          Each listing includes server region, team size, game mode, format, prize, and a private match code for participants.
+        </p>
+        <div class="btn-container-create">
+          <a class="btn btn-color-1" href="{{ url_for('main.create_event') }}">Create Tournament</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results">
+    <p class="section__text__p1">Past Events</p>
+    <h1 class="title">Featured Results</h1>
+    <div class="results-details-container">
+      <div class="tournaments-containers">
+        <div class="details-container2 colour-container col-md-4">
+          <h2 class="experience-sub-title">Duo Zone Wars</h2>
+          <p>Winners: Ultra!! & saia cb <br>Earnings: $1000</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">Solo Reals OCE</h2>
+          <p>Winner: MACHO 486<br>Earnings: $200</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">NAC Solo Zone Wars</h2>
+          <p>Winner: Limit Zenn<br>Earnings: $2000</p>
+        </div>
+        <div class="details-container2 color-container col-md-4">
+          <h2 class="experience-sub-title">EU Duo Cup</h2>
+          <p>Winner: Vico & Flickzy<br>Earnings: $8000</p>
+        </div>
+      </div>
+      <div class="btn-container-create">
+        <button class="btn btn-color-1">View All Results</button>
+        <a class="btn btn-color-1" href="{{ url_for('main.booking_history') }}">View My History</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <p class="section__text__p1">Get in Touch</p>
+    <h1 class="title">Contact Us</h1>
+    <div class="contact-info-upper-containers">
+      <div class="contact-info-container">
+        <p><a href="mailto:info@fntourneyhub.com">info@fntourneyhub.com</a></p>
+      </div>
+      <div class="contact-info-container">
+        <p>+61-075-557-261</p>
+      </div>
+      <div class="contact-info-container">
+        <p><a href="https://x.com/">X</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer py-0 mt-5">
+    <p>Copyright &#169; 2025 FN Tourney Hub. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.querySelectorAll('.background-image[data-bg]').forEach(el => {
+      el.style.backgroundImage = `url(${el.getAttribute('data-bg')})`;
+    });
+  </script>
+</body>
+</html>
