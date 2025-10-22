@@ -1,3 +1,4 @@
+# models.py
 from . import db
 from datetime import datetime
 from flask_login import UserMixin
@@ -17,6 +18,9 @@ class Event(db.Model):
     prize = db.Column(db.String(64))
     status = db.Column(db.String(32), default='Open')
     start_at = db.Column(db.DateTime)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    host = db.relationship('User', backref=db.backref('events', lazy='dynamic'))
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

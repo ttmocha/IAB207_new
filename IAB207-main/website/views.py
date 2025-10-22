@@ -2,23 +2,21 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user, logout_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from urllib.parse import urlparse
 import os
 
-
 from . import db
-from .models import Event, Comment, Order
+from .models import Event, Comment, Order, User
 from .forms import EventForm, LoginForm, RegisterForm
 
 main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    # Order by start_at (your model field)
     events = db.session.execute(
         db.select(Event).order_by(Event.start_at.asc())
     ).scalars().all()
     return render_template('index.html', events=events)
-
 
 @main_bp.route('/events/<int:event_id>')
 def event_details(event_id):
@@ -27,20 +25,17 @@ def event_details(event_id):
         flash("Event not found.", "warning")
         return redirect(url_for('main.index'))
 
-    # Get comments for this event
     comments = db.session.execute(
         db.select(Comment).where(Comment.event_id == event_id).order_by(Comment.created_at.desc())
     ).scalars().all()
 
     return render_template('event-details.html', event=event, comments=comments)
 
-
 @main_bp.route('/create', methods=['GET', 'POST'])
+@login_required
 def create_event():
     form = EventForm()
-
     if form.validate_on_submit():
-        # Create new Event object
         new_event = Event(
             title=form.title.data,
             region=form.region.data,
@@ -48,16 +43,13 @@ def create_event():
             mode=form.mode.data,
             prize=form.prize.data,
             start_at=form.start_at.data,
-            status='Open',  # default value
+            status='Open',
+            user_id=current_user.id,          # ← set host
         )
-
-        # Save to database
         db.session.add(new_event)
         db.session.commit()
-
         flash('Tournament created successfully!', 'success')
-        return redirect(url_for('main.index'))  # redirect back to dashboard
-
+        return redirect(url_for('main.index'))
     return render_template('create-event.html', form=form)
 
 @main_bp.route('/events/<int:event_id>/comment', methods=['POST'])
@@ -71,15 +63,18 @@ def add_comment(event_id):
         flash("Comment posted!", "success")
     return redirect(url_for('main.event_details', event_id=event_id))
 
-from urllib.parse import urlparse
-from flask import request
-
 @main_bp.route('/events/<int:event_id>/delete', methods=['POST'])
+@login_required
 def delete_event(event_id):
     event = db.session.get(Event, event_id)
     if not event:
         flash("Event not found.", "danger")
         return redirect(url_for('main.index'))
+
+    # Only the host may delete
+    if event.user_id != current_user.id:
+        flash("You can only delete tournaments you host.", "warning")
+        return redirect(url_for('main.event_details', event_id=event_id))
 
     confirm = request.form.get('confirm')
     if confirm != str(event_id):
@@ -99,10 +94,26 @@ def delete_event(event_id):
     flash("Tournament deleted successfully!", "success")
     return redirect(url_for('main.index'))
 
-
 @main_bp.route('/history')
+@login_required
 def booking_history():
-    return render_template('booking-history.html')
+    # You can render orders and also show "My hosted tournaments" here if you like
+    my_events = db.session.execute(
+        db.select(Event).where(Event.user_id == current_user.id).order_by(Event.start_at.asc())
+    ).scalars().all()
+    return render_template('booking-history.html', my_events=my_events)
+
+# Public profile page to view a host and their tournaments
+@main_bp.route('/users/<int:user_id>')
+def user_profile(user_id):
+    user = db.session.get(User, user_id)
+    if not user:
+        flash("User not found.", "warning")
+        return redirect(url_for('main.index'))
+    hosted = db.session.execute(
+        db.select(Event).where(Event.user_id == user_id).order_by(Event.start_at.asc())
+    ).scalars().all()
+    return render_template('user-profile.html', user=user, hosted=hosted)
 
 @main_bp.route('/login')
 def login():
@@ -113,11 +124,10 @@ def login():
 def register():
     form = RegisterForm()
     return render_template('register.html', form=form)
-from flask_login import logout_user
 
 @main_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out successfully.', 'info')
+    flash('You have been logged out.', 'info')
     return redirect(url_for('main.index'))

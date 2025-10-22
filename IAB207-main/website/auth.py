@@ -67,3 +67,10 @@ def register():
         return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=register_form)
+
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('main.index'))

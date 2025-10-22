@@ -9,22 +9,53 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
 </head>
 <body>
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="{{ url_for('main.index') }}">
-        <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="20">
-      </a>
-      <div class="navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#landing">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}#tournaments">Tournaments</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.create_event') }}">Create</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">History</a></li>
-        </ul>
-      </div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top shadow-sm">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
+      <img src="{{ url_for('static', filename='img/logo2.png') }}" alt="FN Tourney Hub Logo" height="24" class="me-2">
+      <span class="fw-bold">FN Tourney Hub</span>
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarMain">
+      <ul class="navbar-nav align-items-lg-center">
+        <li class="nav-item px-2"><a class="nav-link" href="#landing">Home</a></li>
+        <li class="nav-item px-2"><a class="nav-link" href="#tournaments">Tournaments</a></li>
+        <li class="nav-item px-2"><a class="nav-link" href="#create">Create</a></li>
+        <li class="nav-item px-2"><a class="nav-link" href="#results">History</a></li>
+      </ul>
+
+      <!-- Profile Dropdown -->
+      <ul class="navbar-nav ms-3">
+        <li class="nav-item dropdown">
+          <a class="nav-link d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-4"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3" aria-labelledby="profileDropdown">
+            {% if current_user.is_authenticated %}
+              <li><h6 class="dropdown-header text-secondary">Signed in as {{ current_user.name }}</h6></li>
+              <li><a class="dropdown-item" href="{{ url_for('main.booking_history') }}"><i class="bi bi-clock-history me-2"></i>My Bookings</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('main.create_event') }}"><i class="bi bi-calendar-plus me-2"></i>Create Event</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus me-2"></i>Register</a></li>
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- FORM -->
   <div class="container" style="padding-top: 7rem; padding-bottom: 3rem;">
