@@ -95,6 +95,7 @@
           <dt class="col-sm-4">Prize Pool</dt>
           <dd class="col-sm-8">{{ event.prize or '—' }}</dd>
 
+          <!-- Displaying the tournament creators name on the bottom of the form :) -->
           <dt class="col-sm-4">Host</dt>
           <dd class="col-sm-8">{{ event.host.name if event.host else 'Unknown' }}</dd>
         </dl>

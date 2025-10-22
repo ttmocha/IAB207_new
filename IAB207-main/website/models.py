@@ -19,6 +19,7 @@ class Event(db.Model):
     status = db.Column(db.String(32), default='Open')
     start_at = db.Column(db.DateTime)
     
+    #im adding this to link created tournaments to users/
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     host = db.relationship('User', backref=db.backref('events', lazy='dynamic'))
 

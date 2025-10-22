@@ -33,7 +33,7 @@ def create_app():
         except (TypeError, ValueError):
             return None
 
-    # Blueprints (same as before)
+    # Blueprints
     from .views import main_bp
     app.register_blueprint(main_bp)
 

@@ -44,7 +44,7 @@ def create_event():
             prize=form.prize.data,
             start_at=form.start_at.data,
             status='Open',
-            user_id=current_user.id,          # ← set host
+            user_id=current_user.id,          # setting the host of the event based on current user
         )
         db.session.add(new_event)
         db.session.commit()
@@ -97,13 +97,13 @@ def delete_event(event_id):
 @main_bp.route('/history')
 @login_required
 def booking_history():
-    # You can render orders and also show "My hosted tournaments" here if you like
+
     my_events = db.session.execute(
         db.select(Event).where(Event.user_id == current_user.id).order_by(Event.start_at.asc())
     ).scalars().all()
     return render_template('booking-history.html', my_events=my_events)
 
-# Public profile page to view a host and their tournaments
+# Public profile page to view a host and their tournaments ( this is just a brainstorming idea :) )
 @main_bp.route('/users/<int:user_id>')
 def user_profile(user_id):
     user = db.session.get(User, user_id)
