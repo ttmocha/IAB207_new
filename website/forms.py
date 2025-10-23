@@ -14,14 +14,34 @@ class LoginForm(FlaskForm):
 
 # ---------- REGISTER FORM ----------
 class RegisterForm(FlaskForm):
-    user_name = StringField("User Name", validators=[InputRequired()])
-    email = StringField("Email Address", validators=[Email("Please enter a valid email")])
-    password = PasswordField(
-        "Password",
-        validators=[InputRequired(), EqualTo("confirm", message="Passwords should match")],
-    )
-    confirm = PasswordField("Confirm Password")
-    submit = SubmitField("Register")
+        user_name = StringField(
+            "User Name", 
+            validators=[
+                InputRequired("Username is required"),
+                Length(min=3, max=20, message="Username must be between 3 and 20 characters"),
+            ]
+        )
+        email = StringField(
+            "Email Address", 
+            validators=[
+                InputRequired("Email is required"),
+                Email("Please enter a valid email address"),
+                Length(max=120, message="Email must be less than 120 characters")
+            ]
+        )
+        password = PasswordField(
+            "Password",
+                    validators=[
+                        InputRequired("Password is required"),
+                        Length(min=8, max=128, message="Password must be between 8 and 128 characters"),
+                        EqualTo("confirm", message="Passwords must match")
+                    ],
+                )
+        confirm = PasswordField(
+            "Confirm Password",
+            validators=[InputRequired("Please confirm your password")]
+        )
+        submit = SubmitField("Register")
 
 # ---------- EVENT FORM ----------
 class EventForm(FlaskForm):
