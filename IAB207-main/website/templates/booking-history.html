@@ -16,6 +16,20 @@
             <h2 class="mb-4 text-center">Your Booking History</h2>
             <div class="row g-4">
 
+                {% for b in bookings %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card bg-black text-light h-100 p-3">
+                            <h5 class="card-title">{{ b.event.title }}</h5>
+                            <p><strong>Order ID:</strong> {{ b.order_id }}</p>
+                            <p><strong>Quantity:</strong> {{ b.quantity }}</p>
+                            <p><strong>Booked:</strong> {{ b.booked_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+                            <a href="{{ url_for('main.event_details', event_id=b.event_id) }}" class="btn btn-outline-light btn-sm">
+                                View Event
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+
                 <div class="col-md-6 col-lg-4">
                     <div class="card bg-black text-light h-100 p-3">
                         <h5 class="card-title">Duo OCE Realistics</h5>
