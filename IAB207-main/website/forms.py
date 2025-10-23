@@ -1,13 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, DateTimeLocalField
-from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired
+from wtforms import (
+    StringField, PasswordField, SubmitField, TextAreaField,
+    SelectField, DateField, TimeField, FileField
+)
+from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, Optional
+from flask_wtf.file import FileAllowed
 
 # ---------- LOGIN FORM ----------
 class LoginForm(FlaskForm):
     user_name = StringField("User Name", validators=[InputRequired("Enter user name")])
     password = PasswordField("Password", validators=[InputRequired("Enter user password")])
     submit = SubmitField("Login")
-
 
 # ---------- REGISTER FORM ----------
 class RegisterForm(FlaskForm):
@@ -20,23 +23,58 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField("Confirm Password")
     submit = SubmitField("Register")
 
-
 # ---------- EVENT FORM ----------
 class EventForm(FlaskForm):
-    title = StringField("Event Name", validators=[InputRequired(), Length(max=140)])
-    region = StringField("Server Region", validators=[Length(max=64)])
+    title = StringField("Tournament Title", validators=[InputRequired(), Length(max=140)])
+
+    # Tier / Category
+    category = SelectField(
+        "Category / Tier",
+        choices=[
+            ("", "Select tier..."),
+            ("Community", "Community"),
+            ("Amateur", "Amateur"),
+            ("College", "College/Student"),
+            ("Pro", "Professional"),
+        ],
+        validators=[InputRequired()],
+    )
+
+    # Venue / Region 
+    region = SelectField(
+        "Venue / Server Region",
+        choices=[
+            ("OCE", "OCE — Oceania"),
+            ("NA-Central", "NA-Central"),
+            ("NA-East", "NA-East"),
+            ("EU", "EU — Europe"),
+            ("ASIA", "ASIA"),
+            ("LAN", "LAN / In-person"),
+        ],
+        validators=[InputRequired()],
+    )
+
+    # Split date/time like the reference
+    date = DateField("Date", format="%Y-%m-%d", validators=[InputRequired()])
+    time = TimeField("Start Time", format="%H:%M", validators=[InputRequired()])
+
     team_size = SelectField(
         "Team Size",
         choices=[("Solo", "Solo"), ("Duo", "Duo"), ("Trio", "Trio"), ("Squad", "Squad")],
-        validators=[DataRequired()],
+        validators=[InputRequired()],
     )
-    mode = StringField("Game Mode", validators=[Length(max=64)])
-    prize = StringField("Prize Pool", validators=[Length(max=64)])
-    start_at = DateTimeLocalField(
-        "Start Date & Time",
-        format="%Y-%m-%dT%H:%M",
-        validators=[DataRequired()],
-        description="Enter date and time in local format (YYYY-MM-DDTHH:MM)",
+    mode = SelectField(
+        "Game Mode",
+        choices=[("Battle Royale", "Battle Royale"), ("Zero Build", "Zero Build"), ("Reload", "Reload"), ("Creative", "Creative")],
+        validators=[InputRequired()],
     )
-    description = TextAreaField("Description / Rules", validators=[Length(max=2000)])
-    submit = SubmitField("Create Tournament")
+
+    prize = StringField("Prize Pool", validators=[Optional(), Length(max=64)])
+
+    description = TextAreaField("Description & Format", validators=[Length(max=2000)])
+
+    # Banner (either upload or URL)
+    banner_url = StringField("Banner Image URL", validators=[Optional(), Length(max=255)])
+    banner_upload = FileField("Or Upload Banner", validators=[FileAllowed(["jpg", "jpeg", "png"], "Images only!")])
+
+    submit = SubmitField("Save Tournament")

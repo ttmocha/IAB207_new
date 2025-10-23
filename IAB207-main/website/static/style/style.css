@@ -56,7 +56,7 @@ nav {
 }
 
 .logo2 img {
-    height: 2rem; /* Adjust as needed */
+    height: 2rem; 
     width: auto;
 }
 
@@ -92,7 +92,7 @@ body::before {
 
 /* SECTIONS */
 section {
-    padding: 8rem 3rem 4rem; /* top padding avoids navbar overlap */
+    padding: 8rem 3rem 4rem;
     min-height: 90vh;
     scroll-snap-align: start;
     display: flex;

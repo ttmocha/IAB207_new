@@ -16,8 +16,11 @@ class Event(db.Model):
     team_size = db.Column(db.String(16))
     mode = db.Column(db.String(64))
     prize = db.Column(db.String(64))
+    category = db.Column(db.String(64))  # category field for form :)
     status = db.Column(db.String(32), default='Open')
     start_at = db.Column(db.DateTime)
+    description = db.Column(db.Text) # description field for form :)
+    banner = db.Column(db.String(255)) 
     
     #im adding this to link created tournaments to users/
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

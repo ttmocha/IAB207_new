@@ -1,3 +1,4 @@
+# views.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from flask_login import login_required, current_user, logout_user
 from datetime import datetime
@@ -36,26 +37,97 @@ def event_details(event_id):
 def create_event():
     form = EventForm()
     if form.validate_on_submit():
+        banner_path = None
+        if form.banner_upload.data:
+            file = form.banner_upload.data
+            filename = secure_filename(file.filename)
+            img_dir = os.path.join(current_app.static_folder, 'img')
+            os.makedirs(img_dir, exist_ok=True)
+            filepath = os.path.join(img_dir, filename)
+            file.save(filepath)
+            banner_path = f'img/{filename}'
+        elif form.banner_url.data:
+            banner_path = form.banner_url.data.strip()
+
+        start_at = datetime.combine(form.date.data, form.time.data)
+
         new_event = Event(
             title=form.title.data,
+            category=form.category.data,
             region=form.region.data,
             team_size=form.team_size.data,
             mode=form.mode.data,
             prize=form.prize.data,
-            start_at=form.start_at.data,
+            start_at=start_at,
             status='Open',
-            user_id=current_user.id,          # setting the host of the event based on current user
+            description=form.description.data,
+            banner=banner_path,
+            user_id=current_user.id,
         )
         db.session.add(new_event)
         db.session.commit()
         flash('Tournament created successfully!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.event_details', event_id=new_event.id))
     return render_template('create-event.html', form=form)
 
+@main_bp.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_event(event_id):
+    event = db.session.get(Event, event_id)
+    if not event:
+        flash("Event not found.", "danger")
+        return redirect(url_for('main.index'))
+
+    if event.user_id != current_user.id:
+        flash("You can only edit tournaments you created.", "warning")
+        return redirect(url_for('main.event_details', event_id=event_id))
+
+    form = EventForm(obj=event)
+
+    if request.method == 'GET' and event.start_at:
+        form.date.data = event.start_at.date()
+        form.time.data = event.start_at.time().replace(second=0, microsecond=0)
+
+    if request.method == 'POST' and not form.validate():
+        flash(str(form.errors), 'danger')
+
+    if form.validate_on_submit():
+        event.title       = form.title.data
+        event.category    = form.category.data
+        event.region      = form.region.data
+        event.team_size   = form.team_size.data
+        event.mode        = form.mode.data
+        event.prize       = form.prize.data
+        event.description = form.description.data
+        event.start_at = datetime.combine(form.date.data, form.time.data)
+
+        uploaded = form.banner_upload.data
+        if uploaded and uploaded.filename:
+            filename  = secure_filename(uploaded.filename)
+            img_dir   = os.path.join(current_app.static_folder, 'img')
+            os.makedirs(img_dir, exist_ok=True)
+            filepath  = os.path.join(img_dir, filename)
+            uploaded.save(filepath)
+            event.banner = f'img/{filename}'
+        elif form.banner_url.data:
+            event.banner = form.banner_url.data.strip()
+
+        db.session.commit()
+        flash('Tournament updated successfully!', 'success')
+        return redirect(url_for('main.index'))  # back to dashboard
+
+    # Reuse existing create template 
+    return render_template('create-event.html',
+                           form=form,
+                           page_title="Edit Tournament",
+                           submit_text="Save Changes",
+                           event=event)
+
 @main_bp.route('/events/<int:event_id>/comment', methods=['POST'])
+@login_required
 def add_comment(event_id):
     body = request.form.get('body')
-    author = request.form.get('author', 'Anonymous')
+    author = current_user.name if getattr(current_user, "name", None) else "User"
     if body:
         comment = Comment(event_id=event_id, body=body, author=author)
         db.session.add(comment)
@@ -71,7 +143,6 @@ def delete_event(event_id):
         flash("Event not found.", "danger")
         return redirect(url_for('main.index'))
 
-    # Only the host may delete
     if event.user_id != current_user.id:
         flash("You can only delete tournaments you host.", "warning")
         return redirect(url_for('main.event_details', event_id=event_id))
@@ -97,13 +168,11 @@ def delete_event(event_id):
 @main_bp.route('/history')
 @login_required
 def booking_history():
-
     my_events = db.session.execute(
         db.select(Event).where(Event.user_id == current_user.id).order_by(Event.start_at.asc())
     ).scalars().all()
     return render_template('booking-history.html', my_events=my_events)
 
-# Public profile page to view a host and their tournaments ( this is just a brainstorming idea :) )
 @main_bp.route('/users/<int:user_id>')
 def user_profile(user_id):
     user = db.session.get(User, user_id)
