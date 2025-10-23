@@ -7,8 +7,8 @@ from urllib.parse import urlparse
 import os
 
 from . import db
-from .models import Event, Comment, Order, User
-from .forms import EventForm, LoginForm, RegisterForm
+from .models import Event, Comment, Order, User, Booking
+from .forms import EventForm, LoginForm, RegisterForm, BookingForm
 
 main_bp = Blueprint('main', __name__)
 
@@ -22,6 +22,7 @@ def index():
 @main_bp.route('/events/<int:event_id>')
 def event_details(event_id):
     event = db.session.get(Event, event_id)
+    form = BookingForm()
     if not event:
         flash("Event not found.", "warning")
         return redirect(url_for('main.index'))
@@ -30,7 +31,7 @@ def event_details(event_id):
         db.select(Comment).where(Comment.event_id == event_id).order_by(Comment.created_at.desc())
     ).scalars().all()
 
-    return render_template('event-details.html', event=event, comments=comments)
+    return render_template('event-details.html', event=event, comments=comments, form=form)
 
 @main_bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -165,13 +166,48 @@ def delete_event(event_id):
     flash("Tournament deleted successfully!", "success")
     return redirect(url_for('main.index'))
 
+@main_bp.route('/events/<int:event_id>/book', methods=['POST'])
+@login_required
+def book_event(event_id):
+    form = BookingForm()
+    if form.validate_on_submit():
+        qty = form.quantity.data
+    else:
+        # Fallback in case the form wasn't rendered via WTForms for some reason
+        qty_raw = request.form.get('quantity', '')
+        try:
+            qty = int(qty_raw)
+        except (TypeError, ValueError):
+            flash('Please enter a valid quantity.', 'danger')
+            return redirect(url_for('main.event_details', event_id=event_id))
+
+    if qty <= 0:
+        flash('Invalid quantity.', 'danger')
+        return redirect(url_for('main.event_details', event_id=event_id))
+
+    booking = Booking(
+        order_id=Booking.new_order_id(),
+        user_id=current_user.id,
+        event_id=event_id,
+        quantity=qty,
+        booked_at=datetime.utcnow(),
+        status='Confirmed',
+    )
+    db.session.add(booking)
+    db.session.commit()
+    flash(f'Booking successful! Order ID: {booking.order_id}', 'success')
+    return redirect(url_for('main.booking_history'))
+
+
 @main_bp.route('/history')
 @login_required
 def booking_history():
-    my_events = db.session.execute(
-        db.select(Event).where(Event.user_id == current_user.id).order_by(Event.start_at.asc())
+    bookings = db.session.execute(
+        db.select(Booking)
+        .where(Booking.user_id == current_user.id)
+        .order_by(Booking.booked_at.desc())
     ).scalars().all()
-    return render_template('booking-history.html', my_events=my_events)
+    return render_template('booking-history.html', bookings=bookings)
 
 @main_bp.route('/users/<int:user_id>')
 def user_profile(user_id):

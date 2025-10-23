@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, PasswordField, SubmitField, TextAreaField,
-    SelectField, DateField, TimeField, FileField
+    SelectField, DateField, TimeField, FileField, IntegerField
 )
-from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, Optional
+from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, Optional, NumberRange
 from flask_wtf.file import FileAllowed
 
 # ---------- LOGIN FORM ----------
@@ -78,3 +78,7 @@ class EventForm(FlaskForm):
     banner_upload = FileField("Or Upload Banner", validators=[FileAllowed(["jpg", "jpeg", "png"], "Images only!")])
 
     submit = SubmitField("Save Tournament")
+
+class BookingForm(FlaskForm):
+    quantity = IntegerField('Quantity', validators=[DataRequired(), NumberRange(min=1)])
+    submit = SubmitField('Confirm Booking')

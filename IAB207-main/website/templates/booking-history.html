@@ -16,75 +16,20 @@
             <h2 class="mb-4 text-center">Your Booking History</h2>
             <div class="row g-4">
 
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-black text-light h-100 p-3">
-                        <h5 class="card-title">Duo OCE Realistics</h5>
-                        <p class="card-text">
-                            <strong>Time Booked:</strong> 05/09/2025, 14:30 AEST<br>
-                            <strong>Event Time:</strong> 14/09/2025, 18:00 AEST<br>
-                            <strong>Buy In:</strong> $10<br>
-                            <strong>Team Members:</strong> Ultra!! & saia cb<br>
-                            <strong>Placement:</strong> N/A<br>
-                            <strong>Earnings:</strong> N/A
-                        </p>
+                {% for b in bookings %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card bg-black text-light h-100 p-3">
+                            <h5 class="card-title">{{ b.event.title }}</h5>
+                            <p><strong>Order ID:</strong> {{ b.order_id }}</p>
+                            <p><strong>Quantity:</strong> {{ b.quantity }}</p>
+                            <p><strong>Booked:</strong> {{ b.booked_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+                            <a href="{{ url_for('main.event_details', event_id=b.event_id) }}" class="btn btn-outline-light btn-sm">
+                                View Event
+                            </a>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-black text-light h-100 p-3">
-                    <h5 class="card-title">Duo Zone Wars</h5>
-                        <p class="card-text">
-                            <strong>Time Booked:</strong> 01/09/2025, 14:30 AEST<br>
-                            <strong>Event Time:</strong> 04/09/2025, 18:00 AEST<br>
-                            <strong>Buy In:</strong> $10<br>
-                            <strong>Team Members:</strong> Ultra!! & saia cb<br>
-                            <strong>Placement:</strong> 1st<br>
-                            <strong>Earnings:</strong> $1000
-                        </p>
-                    </div>
-                </div>
+                {% endfor %}
 
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-black text-light h-100 p-3">
-                    <h5 class="card-title">Trio Showdown</h5>
-                        <p class="card-text">
-                            <strong>Time Booked:</strong> 28/08/2025, 18:00 AEST<br>
-                            <strong>Event Time:</strong> 01/09/2025, 20:00 AEST<br>
-                            <strong>Buy In:</strong> $5<br>
-                            <strong>Team Members:</strong> saia cb, Ultra!!, arcto!<br>
-                            <strong>Placement:</strong> 2nd<br>
-                            <strong>Earnings:</strong> $300
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-black text-light h-100 p-3">
-                        <h5 class="card-title">Solo Reload Cup</h5>
-                        <p class="card-text">
-                            <strong>Time Booked:</strong> 25/08/2025, 16:45 AEST<br>
-                            <strong>Event Time:</strong> 27/08/2025, 17:00 AEST<br>
-                            <strong>Buy In:</strong> $5<br>
-                            <strong>Team Members:</strong> saia cb<br>
-                            <strong>Placement:</strong> 5th<br>
-                            <strong>Earnings:</strong> $50
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-black text-light h-100 p-3">
-                        <h5 class="card-title">BR Bash</h5>
-                        <p class="card-text">
-                            <strong>Time Booked:</strong> 02/09/2025, 12:15 AEST<br>
-                            <strong>Event Time:</strong> 06/09/2025, 19:00 AEST<br>
-                            <strong>Buy In:</strong> $5<br>
-                            <strong>Team Members:</strong> saia cb, Ultra!!<br>
-                            <strong>Placement:</strong> 3rd<br>
-                            <strong>Earnings:</strong> $200
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
