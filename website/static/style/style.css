@@ -284,7 +284,7 @@ textarea.form-control::placeholder {
   color: var(--secondary-color);
 }
 
-/* Adding hover effect, as a result of tutor feedback */
+/* Adding hover effect, following tutor feedback :P */
 .card-raise {
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 1rem;
@@ -295,6 +295,12 @@ textarea.form-control::placeholder {
   transform: translateY(-2px) scale(1.01);
   box-shadow: 0 10px 24px rgba(0,0,0,.35);
   border-color: rgba(255,255,255,0.25);
+}
+/* Making comment time posted match the colour of the actual text */
+.comment-time {
+  color: #fff !important;
+  opacity: 0.85;
+  font-size: 0.85rem;
 }
 
 
