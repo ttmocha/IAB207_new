@@ -74,7 +74,7 @@ class EventForm(FlaskForm):
         validators=[InputRequired()],
     )
 
-    # Split date/time like the reference
+    # Split date/time 
     date = DateField("Date", format="%Y-%m-%d", validators=[InputRequired()])
     time = TimeField("Start Time", format="%H:%M", validators=[InputRequired()])
 

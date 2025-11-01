@@ -136,35 +136,57 @@ def add_comment(event_id):
         flash("Comment posted!", "success")
     return redirect(url_for('main.event_details', event_id=event_id))
 
-@main_bp.route('/events/<int:event_id>/delete', methods=['POST'])
+@main_bp.route('/events/<int:event_id>/cancel', methods=['POST'])
 @login_required
-def delete_event(event_id):
+def cancel_event(event_id):
     event = db.session.get(Event, event_id)
     if not event:
         flash("Event not found.", "danger")
         return redirect(url_for('main.index'))
 
+    # Making cancelling restricted to hosts :)
     if event.user_id != current_user.id:
-        flash("You can only delete tournaments you host.", "warning")
+        flash("You can only cancel tournaments you host.", "warning")
         return redirect(url_for('main.event_details', event_id=event_id))
 
+    # Ensures it cancels from the rigt page
     confirm = request.form.get('confirm')
     if confirm != str(event_id):
-        flash("Please delete from the event details page.", "warning")
+        flash("Please cancel from the event details page.", "warning")
         return redirect(url_for('main.event_details', event_id=event_id))
 
-    ref = request.referrer
-    if ref:
-        ref_path = urlparse(ref).path
-        details_path = url_for('main.event_details', event_id=event_id)
-        if ref_path != details_path:
-            flash("Please delete from the event details page.", "warning")
-            return redirect(details_path)
-
-    db.session.delete(event)
+    # Adding cancel logic as requested by tutor
+    event.status = "Cancelled"
     db.session.commit()
-    flash("Tournament deleted successfully!", "success")
+
+    flash("Tournament cancelled successfully!", "warning")
     return redirect(url_for('main.index'))
+
+@main_bp.route('/events/<int:event_id>/reopen', methods=['POST'])
+@login_required
+def reopen_event(event_id):
+    event = db.session.get(Event, event_id)
+    if not event:
+        flash("Event not found.", "danger")
+        return redirect(url_for('main.index'))
+
+    # Host-only restriction
+    if event.user_id != current_user.id:
+        flash("You can only reopen tournaments you host.", "warning")
+        return redirect(url_for('main.event_details', event_id=event_id))
+
+    # Can only change to open from cancelled
+    if (event.status or 'Open') != 'Cancelled':
+        flash("Only cancelled tournaments can be reopened.", "warning")
+        return redirect(url_for('main.event_details', event_id=event_id))
+    
+    # Changing status back to Open
+    event.status = "Open"
+    db.session.commit()
+
+    flash("Tournament is open for booking again.", "event")
+    return redirect(url_for('main.event_details', event_id=event_id))
+
 
 @main_bp.route('/events/<int:event_id>/book', methods=['POST'])
 @login_required

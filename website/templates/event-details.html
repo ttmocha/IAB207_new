@@ -98,13 +98,26 @@
           <a href="{{ url_for('main.edit_event', event_id=event.id) }}" class="btn btn-warning mt-3 w-100">
             <i class="bi bi-pencil-square"></i> Edit Tournament
           </a>
-          <form class="mt-2" action="{{ url_for('main.delete_event', event_id=event.id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete this tournament? This cannot be undone.');">
-            <input type="hidden" name="confirm" value="{{ event.id }}">
-            <button type="submit" class="btn btn-danger w-100">
-              <i class="bi bi-trash"></i> Delete Tournament
-            </button>
-          </form>
+
+          {% if (event.status or 'Open') == 'Cancelled' %}
+            <!-- Reopen button -->
+            <form class="mt-2" action="{{ url_for('main.reopen_event', event_id=event.id) }}" method="POST"
+                  onsubmit="return confirm('Reopen this tournament and make it available again?');">
+              <input type="hidden" name="confirm" value="{{ event.id }}">
+              <button type="submit" class="btn btn-success w-100">
+                <i class="bi bi-arrow-counterclockwise"></i> Reopen Tournament
+              </button>
+            </form>
+          {% else %}
+            <!-- Cancel button -->
+            <form class="mt-2" action="{{ url_for('main.cancel_event', event_id=event.id) }}" method="POST"
+                  onsubmit="return confirm('Are you sure you want to cancel this tournament?');">
+              <input type="hidden" name="confirm" value="{{ event.id }}">
+              <button type="submit" class="btn btn-danger w-100">
+                <i class="bi bi-x-circle"></i> Cancel Tournament
+              </button>
+            </form>
+          {% endif %}
         {% endif %}
 
         <!-- Back Button -->
